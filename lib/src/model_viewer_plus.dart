@@ -4,7 +4,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'model_viewer_plus_stub.dart'
     if (dart.library.io) 'model_viewer_plus_mobile.dart'
     if (dart.library.js_interop) 'model_viewer_plus_web.dart';
-import 'shim/dart_web_fake.dart' if (dart.library.js_interop) 'dart:html';
 
 enum Loading { auto, lazy, eager }
 
@@ -87,7 +86,6 @@ class ModelViewer extends StatefulWidget {
     this.relatedJs,
     this.id,
     this.debugLogging = true,
-    this.overwriteNodeValidatorBuilder,
     this.javascriptChannels,
     this.onWebViewCreated,
     super.key,
@@ -582,44 +580,6 @@ class ModelViewer extends StatefulWidget {
   ///
   /// Defaults to true;
   final bool? debugLogging;
-
-  /// Customize allowed tags & attrubutes for Web platform.
-  ///
-  /// Solution of console output `Removing disallowed attribute ...`.
-  ///
-  /// In [model-viewer Change Color Example](https://modelviewer.dev/examples/scenegraph/#changeColor),
-  /// we can see codes like:
-  ///
-  /// ```html
-  /// <model-viewer id="color" camera-controls touch-action="pan-y" interaction-prompt="none" src="../../shared-assets/models/Astronaut.glb" ar alt="A 3D model of an astronaut">
-  ///   <div class="controls" id="color-controls">
-  ///     <button data-color="#ff0000">Red</button>
-  ///     <!-- ... some codes ... -->
-  ///   </div>
-  /// </model-viewer>
-  /// ```
-  ///
-  /// If [overwriteNodeValidatorBuilder] is not specified, you may see
-  /// `Removing disallowed attribute <BUTTON data-color="#0000ff">` in the console.
-  /// To make them work on Flutter Web, you need to copy our
-  /// defaultNodeValidatorBuilder and specify [overwriteNodeValidatorBuilder]
-  /// for your need. You may do something like:
-  ///
-  /// ```dart
-  /// import 'package:model_viewer_plus/src/model_viewer_plus_web.dart';
-  /// import 'package:model_viewer_plus/src/shim/dart_html_fake.dart'
-  ///     if (dart.library.html) 'dart:html';
-  ///
-  /// NodeValidatorBuilder myNodeValidatorBuilder = defaultNodeValidatorBuilder
-  ///  ..allowElement('button',
-  ///      attributes: ['data-color'], uriPolicy: AllowAllUri());
-  ///
-  /// ModelViewer(overwriteNodeValidatorBuilder: myNodeValidatorBuilder,);
-  /// ```
-  ///
-  /// See also: [NodeValidatorBuilder](https://api.flutter.dev/flutter/dart-html/NodeValidatorBuilder-class.html)
-  ///
-  final NodeValidatorBuilder? overwriteNodeValidatorBuilder;
 
   /// Passthrough to `javascriptChannels` in the underlying `WebView`.
   final Set<JavascriptChannel>? javascriptChannels;

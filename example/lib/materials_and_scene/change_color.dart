@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
-import 'package:model_viewer_plus/src/model_viewer_plus_web.dart';
-import 'package:model_viewer_plus/src/shim/dart_web_fake.dart'
-    if (dart.library.js_interop) 'dart:html';
 
 void main() => runApp(const MyApp());
 
@@ -25,13 +22,6 @@ String html = '''
   </div>
 ''';
 
-NodeValidatorBuilder myNodeValidatorBuilder = defaultNodeValidatorBuilder
-  ..allowElement(
-    'button',
-    attributes: ['data-color'],
-    uriPolicy: AllowAllUri(),
-  );
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -49,7 +39,6 @@ class MyApp extends StatelessWidget {
           orientation: '20deg 0 0',
           relatedJs: js,
           innerModelViewerHtml: html,
-          overwriteNodeValidatorBuilder: myNodeValidatorBuilder,
         ),
       ),
     );
