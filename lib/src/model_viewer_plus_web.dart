@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -32,7 +33,7 @@ class ModelViewerState extends State<ModelViewer> {
         ..style.border = 'none'
         ..style.height = '100%'
         ..style.width = '100%'
-        ..innerHTML = html,
+        ..innerHTML = html.toJS,
     );
 
     setState(() {
